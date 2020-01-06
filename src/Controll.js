@@ -1,19 +1,25 @@
 import React,{ Component } from 'react';
 import Search from './Search'
 import Sort from './Sort'
+
+import { connect } from 'react-redux'
+
+import * as actions from './actions/index'
+
 class Controll extends Component {
 
   constructor(props){
     super(props);
-    this.onHandleAddTask=this.onHandleAddTask.bind(this)
+    
   }
 
-  onHandleAddTask(){
-    this.props.onClickBtnAdd();
+  onHandleAddTask = () =>{
+      this.props.onToogleForm();
   }
   
   render(){
-    const elmIsToogleForm=this.props.isToogleForm;
+    const elmIsToogleForm=this.props.isDisplayForm;
+
     let {orderBy,orderDir}=this.props;
     let elmBtn=<button onClick={this.onHandleAddTask} type="button" className="btn btn-info btn-block">Add Task</button>;
     if(elmIsToogleForm === true){
@@ -22,7 +28,6 @@ class Controll extends Component {
     
     return (
 
-        
         <div className="row">
         <Search onClickSearch={this.props.onHandleSearchGo} />
         <Sort
@@ -41,4 +46,19 @@ class Controll extends Component {
   
 }
 
-export default Controll;
+const mapStateToProps= state =>{
+  return {
+    isDisplayForm:state.isDisplayForm
+  };
+}
+const mapDispatchToProps=(dispatch,props)=>{
+  return {
+    onToogleForm : () => {
+      dispatch(actions.toggleForm());
+    },
+    
+  };
+}
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(Controll);

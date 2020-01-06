@@ -1,13 +1,26 @@
 import React,{ Component } from 'react';
 import Item from './Item'
+import { connect } from 'react-redux';
+
+
+
 class List extends Component {
 
 
   render(){
+
   	const items=this.props.items;
+
   	const elmItem=items.map((item,index)=>{
   		return(
-  			<Item handleEdit={this.props.handleEdit}  onClickDelete={this.props.onClickDelete} key={index} item={item} index={index} />	
+  			<Item
+         //handleEdit={this.props.handleEdit} 
+         //onClickDelete={this.props.onClickDelete} 
+         key={index} 
+
+         item={item} 
+
+         index={index} />	
   		)
   	})
     return (
@@ -35,7 +48,14 @@ class List extends Component {
       </div>
       );
   }
+
+
   
 }
+const mapStateToProps = (state) =>{
+    return {
+      items:state.tasks,
+    }
+};
 
-export default List;
+export default connect(mapStateToProps,null)(List);

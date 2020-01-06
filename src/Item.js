@@ -1,6 +1,6 @@
 import React,{ Component } from 'react';
-
-
+import { connect } from 'react-redux'
+import * as actions from './actions/index'
 class Item extends Component {
 
   constructor(props){
@@ -8,12 +8,14 @@ class Item extends Component {
     this.handleDelete=this.handleDelete.bind(this)
     this.handleEdit=this.handleEdit.bind(this)
   }
+
   handleDelete(id){
 
-    this.props.onClickDelete(id)
+    this.props.onDeleteItem(id)
   }
   handleEdit(item){
-    this.props.handleEdit(item);
+    this.props.onOpenForm();
+    this.props.onEditItem(item)
 
   }
 
@@ -45,4 +47,27 @@ class Item extends Component {
   
 }
 
-export default Item;
+const mapStateToProps = (state) =>{
+
+   return {
+        
+   }
+}
+
+const mapDispatchToProps=(dispatch,props)=>{
+    return {
+      onDeleteItem:(id)=>{
+        dispatch(actions.deleteItem(id))
+      },
+      onOpenForm:()=>{
+        dispatch(actions.openForm())
+      },
+      onEditItem:(item)=>{
+        dispatch(actions.editItem(item))
+      }
+
+    }
+}
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(Item);

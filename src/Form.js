@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+import { connect } from 'react-redux'
+import * as actions from './actions/index'
 class Form extends Component {
 
   constructor(props){
@@ -19,7 +20,7 @@ class Form extends Component {
 
   }
   onCloseForm(){
-    this.props.handleClose();
+    this.props.onCloseForm();
   }
 
   componentWillMount(){
@@ -61,8 +62,14 @@ class Form extends Component {
       task_name:this.state.task_name,
       task_level:this.state.task_level,
     };
+    
 
-    this.props.handleSubmit(item);
+    //this.props.handleSubmit(item);
+
+    this.props.onSaveTask(item);
+
+    this.props.onCloseForm();
+
     event.preventDefault();
   }
 
@@ -94,5 +101,20 @@ class Form extends Component {
   
   
 }
+const mapStateToProps = (state) =>{
+   return {
+      itemSelected:state.selectedItem
+   }
+}
 
-export default Form;
+const mapDispatchToProps=(dispatch,props)=>{
+    return {
+      onSaveTask: (task) =>{
+        dispatch(actions.saveTask(task));
+      },
+      onCloseForm:()=>{
+      dispatch(actions.closeForm());
+      }
+    }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Form);
